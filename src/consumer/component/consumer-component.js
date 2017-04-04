@@ -39,7 +39,8 @@ export type ComponentProps = {
   docs?: ?Doclet[],
   dist?: ?Dist,
   specsResults?: ?SpecsResults,
-  license?: ?License
+  license?: ?License,
+  deprecate?: ?string,
 }
 
 export default class Component {
@@ -59,6 +60,7 @@ export default class Component {
   dist: ?Dist;
   specsResults: ?SpecsResults;
   license: ?License;
+  deprecate: ?string;
 
   set impl(val: Impl) { this._impl = val; }
 
@@ -119,7 +121,8 @@ export default class Component {
     docs,
     dist,
     specsResults,
-    license
+    license,
+    deprecate,
   }: ComponentProps) {
     this.name = name;
     this.box = box || DEFAULT_BOX_NAME;
@@ -137,6 +140,7 @@ export default class Component {
     this.dist = dist;
     this.specsResults = specsResults;
     this.license = license;
+    this.deprecate = deprecate;
   }
 
   writeBitJson(bitDir: string, force?:boolean = true): Promise<Component> {
@@ -280,7 +284,8 @@ export default class Component {
       docs: this.docs,
       dist: this.dist ? this.dist.serialize() : null,
       specsResults: this.specsResults ? this.specsResults.serialize() : null,
-      license: this.license ? this.license.serialize() : null
+      license: this.license ? this.license.serialize() : null,
+      deprecate: this.deprecate ? this.deprecate.toString() : null
     };
   }
 
@@ -305,7 +310,8 @@ export default class Component {
       docs,
       dist,
       specsResults,
-      license
+      license,
+      deprecate
     } = object;
 
     return new Component({
@@ -324,7 +330,8 @@ export default class Component {
       docs,
       dist: dist ? Dist.deserialize(dist) : null,
       specsResults: specsResults ? SpecsResults.deserialize(specsResults) : null,
-      license: license ? License.deserialize(license) : null
+      license: license ? License.deserialize(license) : null,
+      deprecate,
     });
   }
 
