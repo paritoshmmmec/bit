@@ -12,6 +12,7 @@ export type ScopeJsonProps = {
   name: string,
   resolverPath?: string,
   license?: string,
+  deprecate?: string,
   groupName: ?string;
   remotes?: { name: string, url: string };
 };
@@ -22,11 +23,13 @@ export class ScopeJson {
   license: string;
   remotes: {[string]: string};
   groupName: string;
+  deprecate: string;
 
-  constructor({ name, remotes, resolverPath, license, groupName }: ScopeJsonProps) {
+  constructor({ name, remotes, resolverPath, license, groupName, deprecate }: ScopeJsonProps) {
     this.name = name;
     this.resolverPath = resolverPath;
     this.license = license;
+    this.deprecate = deprecate;
     this.remotes = remotes || {};
     this.groupName = groupName || '';
   }
@@ -56,6 +59,7 @@ export class ScopeJson {
       remotes: this.remotes,
       resolverPath: this.resolverPath,
       license: this.license,
+      deprecate: this.deprecate,
       groupName: this.groupName
     });
   }

@@ -36,9 +36,13 @@ export default class Repository {
     return this.scope.scopeJson.getPopulatedLicense();
   }
   
+  getDeprecate() : Promise<?string> {
+    return Promise.resolve(this.scope.scopeJson.deprecate);
+  }
+  
   getScopeMetaObject() : Promise<Buffer> {
-    return this.getLicense()
-      .then(license => ScopeMeta.fromObject({ license, name: this.scope.name }).compress());
+    return Promise.all([this.getLicense(), this.getDeprecate()])
+      .then(([license, deprecate]) => ScopeMeta.fromObject({ license, deprecate, name: this.scope.name }).compress());
   }
   
   objectPath(ref: Ref): string {
