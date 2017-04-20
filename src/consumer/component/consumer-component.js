@@ -21,6 +21,7 @@ import {
   DEFAULT_SPECS_NAME,
   DEFAULT_BIT_VERSION,
   NO_PLUGIN_TYPE,
+  DEFAULT_LANGUAGE,
 } from '../../constants';
 
 export type ComponentProps = {
@@ -28,6 +29,7 @@ export type ComponentProps = {
   box: string,
   version?: ?number,
   scope?: ?string,
+  lang?: string,
   implFile?: ?string,
   specsFile?: ?string,
   miscFiles?: ?string[],
@@ -50,6 +52,7 @@ export default class Component {
   box: string;
   version: ?number;
   scope: ?string;
+  lang: string;
   implFile: string;
   specsFile: string;
   miscFiles: string[];
@@ -128,6 +131,7 @@ export default class Component {
     box,
     version,
     scope,
+    lang,
     implFile,
     specsFile,
     miscFiles,
@@ -148,6 +152,7 @@ export default class Component {
     this.box = box || DEFAULT_BOX_NAME;
     this.version = version;
     this.scope = scope;
+    this.lang = lang || DEFAULT_LANGUAGE;
     this.implFile = implFile || DEFAULT_IMPL_NAME;
     this.specsFile = specsFile || DEFAULT_SPECS_NAME;
     this.miscFiles = miscFiles || [];
@@ -171,6 +176,7 @@ export default class Component {
       scope: this.scope,
       impl: this.implFile,
       spec: this.specsFile,
+      lang: this.lang,
       miscFiles: this.miscFiles,
       compiler: this.compilerId ? this.compilerId.toString() : NO_PLUGIN_TYPE,
       tester: this.testerId ? this.testerId.toString() : NO_PLUGIN_TYPE,
@@ -299,6 +305,7 @@ export default class Component {
       box: this.box,
       version: this.version ? this.version.toString() : null,
       scope: this.scope,
+      lang: this.lang,
       implFile: this.implFile,
       specsFile: this.specsFile,
       miscFiles: this.miscFiles,
@@ -327,6 +334,7 @@ export default class Component {
       box,
       version,
       scope,
+      lang,
       implFile,
       specsFile,
       miscFiles,
@@ -349,6 +357,7 @@ export default class Component {
       box,
       version: parseInt(version),
       scope,
+      lang,
       implFile,
       specsFile,
       miscFiles,
@@ -381,6 +390,7 @@ export default class Component {
       return new Component({
         name: path.basename(bitDir),
         box: path.basename(path.dirname(bitDir)),
+        lang: bitJson.lang,
         implFile: bitJson.getImplBasename(),
         specsFile: bitJson.getSpecBasename(),
         miscFiles,
@@ -407,10 +417,12 @@ export default class Component {
     const miscFiles = consumerBitJson.getMiscFiles();
     const compilerId = BitId.parse(consumerBitJson.compilerId);
     const testerId = BitId.parse(consumerBitJson.testerId);
+    const lang = consumerBitJson.lang;
 
     return new Component({
       name,
       box,
+      lang,
       version: DEFAULT_BIT_VERSION,
       scope: scopeName,
       implFile,
